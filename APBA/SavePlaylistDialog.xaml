@@ -1,0 +1,24 @@
+﻿<Window x:Class="APBA.SavePlaylistDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:APBA"
+        mc:Ignorable="d"
+        Title="SavePlaylist" Height="150" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Введите название плейлиста:" FontSize="20"></Label>
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="SavePlaylistName" FontSize="20"></TextBox>
+        <Button Grid.Row="2" Content="Сохранить" Name="SavePlaylistOK" FontSize="20"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Отмена" FontSize="20" IsCancel="True"></Button>
+    </Grid>
+</Window>

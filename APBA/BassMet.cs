@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Threading;
-
 using Un4seen.Bass;
-using Un4seen.Bass.AddOn.DShow;
 
 namespace APBA
 {
@@ -39,7 +31,7 @@ namespace APBA
 
         public static double GetAudioPosition()
         {
-            return Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetPosition(_stream));
+            return Bass.BASS_ChannelBytes2Seconds(_stream, Bass.BASS_ChannelGetPosition(_stream));
         }
 
         public static void Pause()

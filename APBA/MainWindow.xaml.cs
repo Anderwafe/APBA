@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Un4seen.Bass;
 using Microsoft.Win32;
 using System.IO;
-using System.Diagnostics.SymbolStore;
 
 namespace APBA
 {
@@ -32,25 +21,26 @@ namespace APBA
             InitializeComponent();
             var addons = Bass.BASS_PluginLoadDirectory(Environment.CurrentDirectory);
             Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-            
-            
 
-            btnPlay.Click += (e, a) => 
+            #region
+            /*btnPlay.Click += (e, a) => 
             {
                 OpenFileDialog OFD = new OpenFileDialog();
-                OFD.Multiselect = true;
+                    OFD.Multiselect = true;
                 if (OFD.ShowDialog() == true)
                 {
                     for (int i = 0; i < OFD.FileNames.Length; i++)
                     {
                         if (Utils.BASSAddOnIsFileSupported(addons, OFD.FileNames[i]))
                         {
+                            int stream = Bass.BASS_StreamCreateFile(OFD.FileNames[i], 0, 0, BASSFlag.BASS_DEFAULT);
                             BassMet.PlayList.Add(new Playlists
                             {
                                 Name = OFD.SafeFileNames[i],
                                 Path = OFD.FileNames[i],
-                                //_stream = Bass.BASS_StreamCreateFile(OFD.FileName, 0, 0, BASSFlag.BASS_DEFAULT)
+                                Duration = Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream))
                             });
+                            Bass.BASS_StreamFree(stream);
                         }
                         else
                         {
@@ -59,7 +49,8 @@ namespace APBA
                     }
                     UpdateList();
                 }
-            };
+            };*/
+            #endregion
 
             btnStop.Click += (e, a) =>
             {
@@ -116,6 +107,8 @@ namespace APBA
             
             lvPlaylist.MouseDoubleClick += (e, a) =>
             {
+                if (BassMet.PlayList.Count == 0)
+                    return;
                 BassMet.Play(BassMet.PlayList[lvPlaylist.SelectedIndex]);
                 Dispatcher.Invoke(() => SyncSlider());
                 /*UpdateList();*/
@@ -141,7 +134,9 @@ namespace APBA
                         {
                             if(Utils.BASSAddOnIsFileSupported(addons, obj))
                             {
+                                int stream = Bass.BASS_StreamCreateFile(obj, 0, 0, BASSFlag.BASS_DEFAULT);
                                 BassMet.PlayList.Add(new Playlists { Name = obj.Substring(obj.LastIndexOfAny(new char[] { '\\', '/' })+1), Path = obj });
+                                Bass.BASS_StreamFree(stream);
                             }
                             else
                             {
@@ -153,9 +148,25 @@ namespace APBA
                 }
             };
 
+            MainMenuPLOpen.Click += (e, a) =>
+            {
+                ReadPlaylistDialog RPD = new ReadPlaylistDialog();
+                RPD.ShowInTaskbar = false;
+                RPD.ShowDialog();
+                UpdateList();
+            };
+
+            MainMenuPLSave.Click += (e, a) =>
+            {
+                SavePlaylistDialog SPD = new SavePlaylistDialog();
+                SPD.ShowInTaskbar = false;
+                SPD.ShowDialog();
+
+            };
+
             slrPlayDuration.ValueChanged += (e, a) =>
             {
-                if((Mouse.LeftButton == MouseButtonState.Pressed || Mouse.RightButton == MouseButtonState.Pressed) && slrPlayDuration.IsMouseOver)
+                if(Mouse.LeftButton == MouseButtonState.Pressed && slrPlayDuration.IsMouseOver)
                 Dispatcher.Invoke(() => Bass.BASS_ChannelSetPosition(BassMet._stream, a.NewValue));
             };
 
@@ -240,7 +251,7 @@ namespace APBA
             BassMet.now = BassMet.PlayList.IndexOf(c);
         }
 
-        void UpdateList()
+        public void UpdateList()
         {
             lvPlaylist.ItemsSource = null;
             lvPlaylist.ItemsSource = BassMet.PlayList;

@@ -38,10 +38,10 @@
             </ListView.ContextMenu>
         </ListView>
         <StackPanel x:Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True"></Slider>
+            <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Width="400"></Slider>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
                 <Button x:Name="btnPrev" Content="Prev" Width="50" Height="50"></Button>
-                <Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>
+                <!--<Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>-->
                 <Button x:Name="btnPause" Content="Pause" Width="50" Height="50" IsTabStop="False"></Button>
                 <Button x:Name="btnResume" Content="Resume" Width="50" Height="50"></Button>
                 <Button x:Name="btnStop" Content="Stop" Width="50" Height="50"></Button>
