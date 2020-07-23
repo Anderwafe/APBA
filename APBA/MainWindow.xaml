@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APBA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,7 +15,7 @@
             <ColumnDefinition Width="230"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" IsMainMenu="True" Name="MainMenu" Grid.Column="0" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0" IsMainMenu="True" Name="MainMenu" FontSize="15" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Плейлист">
                 <MenuItem Name="MainMenuPLOpen" Header="Открыть"></MenuItem>
                 <MenuItem Name="MainMenuPLSave" Header="Сохранить"></MenuItem>
@@ -38,14 +38,40 @@
             </ListView.ContextMenu>
         </ListView>
         <StackPanel x:Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Width="400"></Slider>
+            <StackPanel Orientation="Horizontal" Height="Auto" VerticalAlignment="Center">
+                <Border Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="10, 10, 10, 10" Margin="7" Padding="5">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" VerticalAlignment="Center" Width="400"></Slider>
+                        <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+                            <Label Name="lblDurationNow" HorizontalAlignment="Left" FontSize="15" Width="auto" Content="00:00:00"></Label>
+                            <Label Name="lblMusicDuration" HorizontalAlignment="Right" FontSize="15" Width="auto" Content="00:00:00"></Label>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+                <StackPanel Orientation="Vertical">
+                    <Border BorderBrush="Black" CornerRadius="10 10 0 0" BorderThickness="2 2 2 0" Padding="5">
+                        <Border.Background>
+                            <LinearGradientBrush>
+                                <GradientStop Color="Red" Offset="0.0"></GradientStop>
+                                <GradientStop Color="Yellow" Offset="0.5"></GradientStop>
+                                <GradientStop Color="Green" Offset="1"></GradientStop>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Slider x:Name="slrPlayVolume" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Maximum="100" Orientation="Vertical" Value="100" Height="75" Minimum="0"></Slider>
+                    </Border>
+                    <Border Background="Green" BorderBrush="Black" BorderThickness="2 2 2 2" CornerRadius="0 0 10 10" Padding="5">
+                        <Button Height="20" Width="20" Opacity="1000" IsTabStop="False">
+                        </Button>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
-                <Button x:Name="btnPrev" Content="Prev" Width="50" Height="50"></Button>
+                <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
                 <!--<Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>-->
-                <Button x:Name="btnPause" Content="Pause" Width="50" Height="50" IsTabStop="False"></Button>
-                <Button x:Name="btnResume" Content="Resume" Width="50" Height="50"></Button>
-                <Button x:Name="btnStop" Content="Stop" Width="50" Height="50"></Button>
-                <Button x:Name="btnNext" Content="Next" Width="50" Height="50"></Button>
+                <Button x:Name="btnPause" Content="Pause" Background="White" Width="50" Height="50" IsTabStop="False"></Button>
+                <Button x:Name="btnResume" Content="Resume" Background="White" Width="50" Height="50"></Button>
+                <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
+                <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
             </StackPanel>
         </StackPanel>
     </Grid>

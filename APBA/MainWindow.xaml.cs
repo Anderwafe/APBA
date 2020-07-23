@@ -19,8 +19,11 @@ namespace APBA
         public MainWindow()
         {
             InitializeComponent();
+            BassMet.ggg = this;
             var addons = Bass.BASS_PluginLoadDirectory(Environment.CurrentDirectory);
             Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+
+            BassMet.slrVolume = (float)slrPlayVolume.Value;
 
             #region
             /*btnPlay.Click += (e, a) => 
@@ -54,19 +57,16 @@ namespace APBA
 
             btnStop.Click += (e, a) =>
             {
-                BassMet.timer.Stop();
                 BassMet.Stop();
             };
             btnPause.Click += (e, a) =>
             {
-                BassMet.timer.Stop();
                 BassMet.Pause();
             };
 
             btnResume.Click += (e, a) =>
             {
                 BassMet.Resume();
-                BassMet.timer.Start();
             };
 
             btnNext.Click += (e, a) =>
@@ -74,7 +74,6 @@ namespace APBA
                 if (BassMet.PlayList.Count > 0)
                 {
                     BassMet.Next();
-                    Dispatcher.Invoke(() => SyncSlider());
                 }
             };
 
@@ -83,7 +82,6 @@ namespace APBA
                 if (BassMet.PlayList.Count > 0)
                 {
                     BassMet.Prev();
-                    Dispatcher.Invoke(() => SyncSlider());
                 }
             };
 
@@ -110,7 +108,6 @@ namespace APBA
                 if (BassMet.PlayList.Count == 0)
                     return;
                 BassMet.Play(BassMet.PlayList[lvPlaylist.SelectedIndex]);
-                Dispatcher.Invoke(() => SyncSlider());
                 /*UpdateList();*/
             };
 
@@ -167,7 +164,14 @@ namespace APBA
             slrPlayDuration.ValueChanged += (e, a) =>
             {
                 if(Mouse.LeftButton == MouseButtonState.Pressed && slrPlayDuration.IsMouseOver)
-                Dispatcher.Invoke(() => Bass.BASS_ChannelSetPosition(BassMet._stream, a.NewValue));
+                    Dispatcher.Invoke(() => Bass.BASS_ChannelSetPosition(BassMet._stream, a.NewValue));
+                lblDurationNow.Content = new TimeSpan(0, 0, (int)BassMet.GetAudioPosition());
+            };
+
+            slrPlayVolume.ValueChanged += (e, a) =>
+            {
+                BassMet.slrVolume = (float)a.NewValue;
+                Bass.BASS_ChannelSetAttribute(BassMet._stream, BASSAttribute.BASS_ATTRIB_VOL, (float)a.NewValue / 100f);
             };
 
             BassMet.timer.Tick += (e, a) =>
@@ -175,12 +179,14 @@ namespace APBA
                 if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_STOPPED)
                 {
                     BassMet.Next();
-                    Dispatcher.Invoke(() => SyncSlider());
                 }
                 if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PLAYING)
                 {
-                    Dispatcher.Invoke(() => slrPlayDuration.Value = BassMet.GetAudioPosition());
-                    
+                    Dispatcher.Invoke(() =>
+                    {
+                        slrPlayDuration.Value = BassMet.GetAudioPosition();
+                        lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
+                    });
                 }
             };
 

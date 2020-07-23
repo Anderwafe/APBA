@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
 using Un4seen.Bass;
 
 namespace APBA
@@ -11,20 +13,29 @@ namespace APBA
         public static int _stream = 0;
         public static BASSTimer timer = new BASSTimer(500);
         static public List<Playlists> PlayList = new List<Playlists>();
+        public static float slrVolume;
+        static public MainWindow ggg;
 
 
         public static bool Play(Playlists PlayItem)
         {
-            timer.Start();
             if (_stream != 0)
-                if(Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
+                if (Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
                 {
-                    Bass.BASS_ChannelStop(_stream);
-                    Bass.BASS_StreamFree(_stream);
+                    Stop();
                 }
+            timer.Start();
             _stream = Bass.BASS_StreamCreateFile(PlayItem.Path, 0, 0, BASSFlag.BASS_DEFAULT);
             now = PlayList.IndexOf(PlayItem);
-            //now = PlayItem;
+            Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, slrVolume / 100f);
+
+            ggg.Dispatcher.InvokeAsync(() =>
+            {
+                ggg.SyncSlider();
+                ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
+            });
+
+
             return Bass.BASS_ChannelPlay(_stream, true);
             
         }
@@ -40,6 +51,7 @@ namespace APBA
             {
                 return;
             }
+            timer.Enabled = false;
             Bass.BASS_ChannelPause(_stream);
         }
 
@@ -50,17 +62,18 @@ namespace APBA
                 return;
             }
             Bass.BASS_ChannelPlay(_stream, false);
+            timer.Enabled = true;
         }
 
         public static void Stop()
         {
-            timer.Stop();
+            timer.Enabled = false;
             if(_stream == 0)
             {
                 return;
             }
-            Bass.BASS_ChannelStop(_stream);
             Bass.BASS_StreamFree(_stream);
+            Bass.BASS_ChannelStop(_stream);
         }
 
         public static void Next()
