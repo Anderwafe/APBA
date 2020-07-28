@@ -58,10 +58,15 @@ namespace APBA
 
             lvOpenPlaylist.MouseDoubleClick += (e, a) =>
             {
-                if (LPlaylists.Count == 0)
-                    return;
-                Playlists.PlayListRead(LPlaylists[lvOpenPlaylist.SelectedIndex]);
-                Close();
+                try
+                {
+                    if (LPlaylists.Count == 0)
+                        return;
+                    Playlists.PlayListRead(LPlaylists[lvOpenPlaylist.SelectedIndex]);
+                    Close();
+                }
+                catch
+                { }
             };
         }
     }

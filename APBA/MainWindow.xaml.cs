@@ -5,6 +5,9 @@ using System.Windows.Input;
 using Un4seen.Bass;
 using Microsoft.Win32;
 using System.IO;
+using System.Diagnostics;
+using System.Windows.Controls;
+using WindowsHook;
 
 namespace APBA
 {
@@ -14,11 +17,37 @@ namespace APBA
     /// </summary>
     public partial class MainWindow : Window
     {
-        
 
         public MainWindow()
         {
             InitializeComponent();
+
+            IKeyboardMouseEvents KeyHook = Hook.GlobalEvents();
+            KeyHook.KeyDown += (s, e) =>
+            {
+                switch (e.KeyCode)
+                {
+                    case WindowsHook.Keys.MediaNextTrack:
+                        BassMet.Next();
+                        break;
+
+                    case WindowsHook.Keys.MediaPlayPause:
+                        if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PAUSED)
+                            BassMet.Resume();
+                        else
+                            BassMet.Pause();
+                        break;
+
+                    case WindowsHook.Keys.MediaPreviousTrack:
+                        BassMet.Prev();
+                        break;
+
+                    case WindowsHook.Keys.MediaStop:
+                        BassMet.Stop();
+                        break;
+                }
+            };
+
             BassMet.ggg = this;
             var addons = Bass.BASS_PluginLoadDirectory(Environment.CurrentDirectory);
             Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
@@ -54,6 +83,8 @@ namespace APBA
                 }
             };*/
             #endregion
+
+            
 
             btnStop.Click += (e, a) =>
             {
@@ -113,15 +144,15 @@ namespace APBA
 
             lvPlaylist.DragEnter += (e, a) =>
             {
-                if (a.Data.GetDataPresent(DataFormats.FileDrop))
-                    a.Effects = DragDropEffects.Copy;
+                if (a.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+                    a.Effects = System.Windows.DragDropEffects.Copy;
             };
 
             lvPlaylist.Drop += (e, a) =>
             {
-                if (a.Data.GetDataPresent(DataFormats.FileDrop))
+                if (a.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
                 {
-                    foreach (string obj in (string[])a.Data.GetData(DataFormats.FileDrop))
+                    foreach (string obj in (string[])a.Data.GetData(System.Windows.DataFormats.FileDrop))
                     {
                         if (Directory.Exists(obj))
                         {
@@ -137,7 +168,7 @@ namespace APBA
                             }
                             else
                             {
-                                MessageBox.Show("Не удалось загрузить файл '" + obj + "'");
+                                System.Windows.MessageBox.Show("Не удалось загрузить файл '" + obj + "'");
                             }
                         }
                     }
@@ -213,7 +244,32 @@ namespace APBA
                 }
             };*/
         }
-        
+
+        /*private void KeyDown(KeyboardHookEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Keys.MediaNextTrack:
+                    BassMet.Next();
+                    break;
+
+                case Keys.MediaPlayPause:
+                    if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PAUSED)
+                        BassMet.Resume();
+                    else
+                        BassMet.Pause();
+                    break;
+
+                case Keys.MediaPreviousTrack:
+                    BassMet.Prev();
+                    break;
+
+                case Keys.MediaStop:
+                    BassMet.Stop();
+                    break;
+            }
+        }*/
+
         public void SyncSlider()
         {
                 slrPlayDuration.Maximum = Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream));
