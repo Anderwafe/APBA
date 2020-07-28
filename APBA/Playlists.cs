@@ -13,7 +13,6 @@ namespace APBA
     {
         public string Name { get; set; }
         public string Path;
-        //public int _stream;
 
         public static string PLPath = Environment.CurrentDirectory + @"\Playlists\";
 

@@ -11,16 +11,14 @@ using WindowsHook;
 
 namespace APBA
 {
-
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
 
         public MainWindow()
         {
             InitializeComponent();
+
+            #region Global Hooks
 
             IKeyboardMouseEvents KeyHook = Hook.GlobalEvents();
             KeyHook.KeyDown += (s, e) =>
@@ -48,43 +46,13 @@ namespace APBA
                 }
             };
 
+            #endregion
+
             BassMet.ggg = this;
             var addons = Bass.BASS_PluginLoadDirectory(Environment.CurrentDirectory);
             Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
 
             BassMet.slrVolume = (float)slrPlayVolume.Value;
-
-            #region
-            /*btnPlay.Click += (e, a) => 
-            {
-                OpenFileDialog OFD = new OpenFileDialog();
-                    OFD.Multiselect = true;
-                if (OFD.ShowDialog() == true)
-                {
-                    for (int i = 0; i < OFD.FileNames.Length; i++)
-                    {
-                        if (Utils.BASSAddOnIsFileSupported(addons, OFD.FileNames[i]))
-                        {
-                            int stream = Bass.BASS_StreamCreateFile(OFD.FileNames[i], 0, 0, BASSFlag.BASS_DEFAULT);
-                            BassMet.PlayList.Add(new Playlists
-                            {
-                                Name = OFD.SafeFileNames[i],
-                                Path = OFD.FileNames[i],
-                                Duration = Bass.BASS_ChannelBytes2Seconds(stream, Bass.BASS_ChannelGetLength(stream))
-                            });
-                            Bass.BASS_StreamFree(stream);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Не удалось загрузить файл '" + OFD.FileNames[i] + "'");
-                        }
-                    }
-                    UpdateList();
-                }
-            };*/
-            #endregion
-
-            
 
             btnStop.Click += (e, a) =>
             {
@@ -139,7 +107,6 @@ namespace APBA
                 if (BassMet.PlayList.Count == 0)
                     return;
                 BassMet.Play(BassMet.PlayList[lvPlaylist.SelectedIndex]);
-                /*UpdateList();*/
             };
 
             lvPlaylist.DragEnter += (e, a) =>
@@ -233,42 +200,7 @@ namespace APBA
 
                 }
             };
-
-            /*MainMenuSave.Click += (e,a) =>
-            {
-                string filename = "";
-
-                using (StreamWriter SW = new StreamWriter(Environment.CurrentDirectory + @"/Playlists/" + filename, false))
-                {
-
-                }
-            };*/
         }
-
-        /*private void KeyDown(KeyboardHookEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Keys.MediaNextTrack:
-                    BassMet.Next();
-                    break;
-
-                case Keys.MediaPlayPause:
-                    if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PAUSED)
-                        BassMet.Resume();
-                    else
-                        BassMet.Pause();
-                    break;
-
-                case Keys.MediaPreviousTrack:
-                    BassMet.Prev();
-                    break;
-
-                case Keys.MediaStop:
-                    BassMet.Stop();
-                    break;
-            }
-        }*/
 
         public void SyncSlider()
         {
