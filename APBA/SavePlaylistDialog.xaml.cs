@@ -25,7 +25,7 @@ namespace APBA
             SavePlaylistOK.Click += (e, a) =>
             {
                 Dispatcher.InvokeAsync(() => {
-                    if (Playlists.PlayListSave(SavePlaylistName.Text)) 
+                    if (Playlists.PlayListSave(SavePlaylistName.Text, BassMet.PlayList)) 
                     {
                         DialogResult = true;
                         Close();

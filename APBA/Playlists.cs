@@ -1,8 +1,10 @@
 ﻿using PlaylistsNET.Content;
 using PlaylistsNET.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 
 using Un4seen.Bass;
@@ -16,7 +18,7 @@ namespace APBA
 
         public static string PLPath = Environment.CurrentDirectory + @"\Playlists\";
 
-        public static void PlayListRead(string name)
+        public static void PlayListRead(in string name)
         {
             M3uContent content = new M3uContent();
             M3uPlaylist playlist = content.GetFromString(File.ReadAllText(PLPath + name));
@@ -27,11 +29,11 @@ namespace APBA
             }
         }
 
-        public static bool PlayListSave(string name)
+        public static bool PlayListSave(in string name, in List<Playlists> Playlist)
         {
             M3uPlaylist playlist = new M3uPlaylist();
             playlist.IsExtended = true;
-            foreach (var play in BassMet.PlayList)
+            foreach (var play in Playlist)
             {
                 playlist.PlaylistEntries.Add(new M3uPlaylistEntry
                 {

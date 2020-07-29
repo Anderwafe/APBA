@@ -65,14 +65,23 @@
                     </Border>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
-                <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
-                <!--<Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>-->
-                <Button x:Name="btnPause" Content="Pause" Background="White" Width="50" Height="50" IsTabStop="False"></Button>
-                <Button x:Name="btnResume" Content="Resume" Background="White" Width="50" Height="50"></Button>
-                <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
-                <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
-            </StackPanel>
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Height="50" Width="400" LastChildFill="True">
+                <Button x:Name="btnShaffle" Content="Shaffle" Background="White" Width="35" Height="35" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"></Button>
+
+                <Button x:Name="btnLoop" Background="White" BorderBrush="Red" BorderThickness="3" Content="Loop" Width="35" Height="35" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right">
+                </Button>
+
+                <Border>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
+                        <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
+                        <!--<Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>-->
+                        <Button x:Name="btnPause" Content="Pause" Background="White" Width="50" Height="50" IsTabStop="False"></Button>
+                        <Button x:Name="btnResume" Content="Resume" Background="White" Width="50" Height="50"></Button>
+                        <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
+                        <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </Window>

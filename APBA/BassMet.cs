@@ -8,6 +8,8 @@ namespace APBA
 {
     static class BassMet
     {
+        #region Class fields
+
         public static int hz = 44100;
         public static int now;
         public static int _stream = 0;
@@ -16,15 +18,15 @@ namespace APBA
         public static float slrVolume;
         static public MainWindow ggg;
 
+        #endregion
 
-        public static bool Play(Playlists PlayItem)
+        public static void Play(in Playlists PlayItem)
         {
             if (_stream != 0)
                 if (Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
                 {
                     Stop();
                 }
-            timer.Start();
             _stream = Bass.BASS_StreamCreateFile(PlayItem.Path, 0, 0, BASSFlag.BASS_DEFAULT);
             now = PlayList.IndexOf(PlayItem);
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, slrVolume / 100f);
@@ -35,9 +37,13 @@ namespace APBA
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
             });
 
+            Bass.BASS_ChannelPlay(_stream, true);
+            timer.Start();
+        }
 
-            return Bass.BASS_ChannelPlay(_stream, true);
-            
+        public static void Replay()
+        {
+            Bass.BASS_ChannelPlay(_stream, true);
         }
 
         public static double GetAudioPosition()
@@ -74,9 +80,11 @@ namespace APBA
             }
             Bass.BASS_StreamFree(_stream);
             Bass.BASS_ChannelStop(_stream);
+            ggg.lblMusicDuration.Content = new TimeSpan();
+            ggg.lblDurationNow.Content = new TimeSpan();
         }
 
-        public static void Next()
+        public static void PlayNext()
         {
             if (PlayList.Count > 0)
             {
@@ -89,7 +97,7 @@ namespace APBA
                 Stop();
         }
 
-        public static void Prev()
+        public static void PlayPrev()
         {
             if (PlayList.Count > 0)
             {
