@@ -238,13 +238,15 @@ namespace APBA
             {
                 if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_STOPPED)
                 {
+                    Brush b = Brushes.Blue;
                     Dispatcher.Invoke(() =>
                     {
-                        if (btnLoop.BorderBrush == Brushes.Blue)
-                            BassMet.Replay();
-                        else
-                            BassMet.PlayNext();
+                        b = btnLoop.BorderBrush;
                     });
+                    if (b == Brushes.Blue)
+                        BassMet.Replay();
+                    else
+                        BassMet.PlayNext();
                 }
                 if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PLAYING)
                 {
