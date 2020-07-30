@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
 using Un4seen.Bass;
 
@@ -27,11 +28,13 @@ namespace APBA
                 Bass.BASS_Init(-1, hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
             }
             Bass.BASS_StreamFree(_stream);
+            Bass.BASS_ChannelStop(_stream);
+
             _stream = Bass.BASS_StreamCreateFile(PlayItem.Path, 0, 0, BASSFlag.BASS_DEFAULT);
             now = PlayList.IndexOf(PlayItem);
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, slrVolume / 100f);
 
-            ggg.Dispatcher.InvokeAsync(() =>
+            ggg.Dispatcher.Invoke(() =>
             {
                 ggg.SyncSlider();
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
@@ -69,14 +72,13 @@ namespace APBA
         {
             timer.Enabled = false;
             Bass.BASS_StreamFree(_stream);
-            Bass.BASS_Free();
+            Bass.BASS_ChannelStop(_stream);
         }
 
         public static void PlayNext()
         {
             if (PlayList.Count > 0)
             {
-                Bass.BASS_StreamFree(_stream);
                 if (now + 1 < PlayList.Count())
                 {
                     Play(PlayList[now + 1]);
@@ -94,7 +96,6 @@ namespace APBA
         {
             if (PlayList.Count > 0)
             {
-                Bass.BASS_StreamFree(_stream);
                 if (now - 1 >= 0)
                 {
                     Play(PlayList[now - 1]);

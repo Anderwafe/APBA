@@ -55,9 +55,6 @@ namespace APBA
 
             BassMet.ggg = this;
             var addons = Bass.BASS_PluginLoadDirectory(Environment.CurrentDirectory);
-            Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-
-            BassMet.slrVolume = (float)slrPlayVolume.Value;
 
             #region Buttons logic
 
@@ -221,6 +218,8 @@ namespace APBA
 
             #region Sliders logic
 
+            BassMet.slrVolume = (float)slrPlayVolume.Value;
+
             slrPlayDuration.ValueChanged += (e, a) =>
             {
                 if(Mouse.LeftButton == MouseButtonState.Pressed && slrPlayDuration.IsMouseOver)
@@ -259,7 +258,6 @@ namespace APBA
                     });
                 }
             };
-
             
         }
 
