@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System.IO;
 using WindowsHook;
 using System.Windows.Media;
+using System.Threading;
 
 namespace APBA
 {
@@ -18,6 +19,9 @@ namespace APBA
         public MainWindow()
         {
             InitializeComponent();
+
+            Dispatcher.InvokeAsync(() => { Timer timer = new Timer(new TimerCallback(CollectGarbage), null, 0, 5000); });
+            
 
             #region Global Hooks
 
@@ -80,14 +84,12 @@ namespace APBA
                 BassMet.Stop();
             };
 
-            btnPause.Click += (e, a) =>
+            btnResumePause.Click += (e, a) =>
             {
-                BassMet.Pause();
-            };
-
-            btnResume.Click += (e, a) =>
-            {
-                BassMet.Resume();
+                if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PAUSED)
+                    BassMet.Resume();
+                else
+                    BassMet.Pause();
             };
 
             btnNext.Click += (e, a) =>
@@ -259,6 +261,12 @@ namespace APBA
             };
 
             
+        }
+
+        public static void CollectGarbage(object obj)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public void SyncSlider()

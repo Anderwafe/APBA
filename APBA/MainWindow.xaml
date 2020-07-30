@@ -57,7 +57,7 @@
                                 <GradientStop Color="Green" Offset="1"></GradientStop>
                             </LinearGradientBrush>
                         </Border.Background>
-                        <Slider x:Name="slrPlayVolume" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Maximum="100" Orientation="Vertical" Value="100" Height="75" Minimum="0"></Slider>
+                        <Slider x:Name="slrPlayVolume" Width="Auto" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Maximum="100" Orientation="Vertical" Value="100" Height="75" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Minimum="0"></Slider>
                     </Border>
                     <Border Background="Green" BorderBrush="Black" BorderThickness="2 2 2 2" CornerRadius="0 0 10 10" Padding="5">
                         <Button Height="20" Width="20" Opacity="1000" IsTabStop="False">
@@ -74,9 +74,7 @@
                 <Border>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
                         <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
-                        <!--<Button x:Name="btnPlay" Content="Play" Width="50" Height="50"/>-->
-                        <Button x:Name="btnPause" Content="Pause" Background="White" Width="50" Height="50" IsTabStop="False"></Button>
-                        <Button x:Name="btnResume" Content="Resume" Background="White" Width="50" Height="50"></Button>
+                        <Button x:Name="btnResumePause" Content="Resume/Pause" Background="White" Width="50" Height="50"></Button>
                         <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
                         <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
                     </StackPanel>

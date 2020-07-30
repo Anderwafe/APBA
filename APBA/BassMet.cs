@@ -22,11 +22,11 @@ namespace APBA
 
         public static void Play(in Playlists PlayItem)
         {
-            if (_stream != 0)
-                if (Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
-                {
-                    Stop();
-                }
+            if(Bass.BASS_GetInfo() == null)
+            {
+                Bass.BASS_Init(-1, hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+            }
+            Bass.BASS_StreamFree(_stream);
             _stream = Bass.BASS_StreamCreateFile(PlayItem.Path, 0, 0, BASSFlag.BASS_DEFAULT);
             now = PlayList.IndexOf(PlayItem);
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, slrVolume / 100f);
@@ -36,6 +36,8 @@ namespace APBA
                 ggg.SyncSlider();
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
             });
+
+            GC.Collect();
 
             Bass.BASS_ChannelPlay(_stream, true);
             timer.Start();
@@ -53,20 +55,12 @@ namespace APBA
 
         public static void Pause()
         {
-            if(_stream == 0 || Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_STOPPED)
-            {
-                return;
-            }
             timer.Enabled = false;
             Bass.BASS_ChannelPause(_stream);
         }
 
         public static void Resume()
         {
-            if (_stream == 0 || Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_STOPPED)
-            {
-                return;
-            }
             Bass.BASS_ChannelPlay(_stream, false);
             timer.Enabled = true;
         }
@@ -74,24 +68,23 @@ namespace APBA
         public static void Stop()
         {
             timer.Enabled = false;
-            if(_stream == 0)
-            {
-                return;
-            }
             Bass.BASS_StreamFree(_stream);
-            Bass.BASS_ChannelStop(_stream);
-            ggg.lblMusicDuration.Content = new TimeSpan();
-            ggg.lblDurationNow.Content = new TimeSpan();
+            Bass.BASS_Free();
         }
 
         public static void PlayNext()
         {
             if (PlayList.Count > 0)
             {
+                Bass.BASS_StreamFree(_stream);
                 if (now + 1 < PlayList.Count())
+                {
                     Play(PlayList[now + 1]);
+                }
                 else
+                {
                     Play(PlayList.First());
+                }
             }
             else
                 Stop();
@@ -101,10 +94,15 @@ namespace APBA
         {
             if (PlayList.Count > 0)
             {
+                Bass.BASS_StreamFree(_stream);
                 if (now - 1 >= 0)
+                {
                     Play(PlayList[now - 1]);
+                }
                 else
+                {
                     Play(PlayList.Last());
+                }
             }
             else
                 Stop();
