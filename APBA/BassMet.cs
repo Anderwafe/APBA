@@ -34,13 +34,13 @@ namespace APBA
             now = PlayList.IndexOf(PlayItem);
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, slrVolume / 100f);
 
+            EqualizerSettings.SetFX(_stream);
+
             ggg.Dispatcher.Invoke(() =>
             {
                 ggg.SyncSlider();
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
             });
-
-            GC.Collect();
 
             Bass.BASS_ChannelPlay(_stream, true);
             timer.Start();

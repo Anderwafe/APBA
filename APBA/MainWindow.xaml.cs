@@ -21,7 +21,6 @@ namespace APBA
             InitializeComponent();
 
             Dispatcher.InvokeAsync(() => { Timer timer = new Timer(new TimerCallback(CollectGarbage), null, 0, 5000); });
-            
 
             #region Global Hooks
 
@@ -153,7 +152,7 @@ namespace APBA
                     {
                         if (Directory.Exists(obj))
                         {
-                            foreach(var file in Directory.GetFiles(obj))
+                            foreach (var file in Directory.GetFiles(obj))
                             {
                                 if (Utils.BASSAddOnIsFileSupported(addons, file))
                                 {
@@ -167,9 +166,9 @@ namespace APBA
                         }
                         else
                         {
-                            if(Utils.BASSAddOnIsFileSupported(addons, obj))
+                            if (Utils.BASSAddOnIsFileSupported(addons, obj))
                             {
-                                BassMet.PlayList.Add(new Playlists { Name = obj.Substring(obj.LastIndexOfAny(new char[] { '\\', '/' })+1), Path = obj });
+                                BassMet.PlayList.Add(new Playlists { Name = obj.Substring(obj.LastIndexOfAny(new char[] { '\\', '/' }) + 1), Path = obj });
                             }
                             else
                             {
@@ -212,6 +211,12 @@ namespace APBA
                 SPD.ShowInTaskbar = false;
                 SPD.ShowDialog();
 
+            };
+
+            MainMenuEcvalaizer.Click += (e, a) =>
+            {
+                Equalizer ES = new Equalizer();
+                ES.ShowDialog();
             };
 
             #endregion
@@ -310,10 +315,27 @@ namespace APBA
             BassMet.now = BassMet.PlayList.IndexOf(c);
         }
 
+        public TimeSpan CalculatePlaylistDuration()
+        {
+            if (Bass.BASS_GetInfo() == null)
+            {
+                Bass.BASS_Init(-1, BassMet.hz, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+            }
+            int secs = 0;
+            foreach(var i in BassMet.PlayList)
+            {
+                var a = Bass.BASS_StreamCreateFile(i.Path, 0, 0, BASSFlag.BASS_DEFAULT);
+                secs += (int)Bass.BASS_ChannelBytes2Seconds(a, Bass.BASS_ChannelGetLength(a));
+                Bass.BASS_StreamFree(a);
+            }
+            return new TimeSpan(0, 0, secs);
+        }
+
         public void UpdateList()
         {
             lvPlaylist.ItemsSource = null;
             lvPlaylist.ItemsSource = BassMet.PlayList;
+            Dispatcher.Invoke(() => lblPlaylistDuration.Content = CalculatePlaylistDuration());
         }
     }
 }

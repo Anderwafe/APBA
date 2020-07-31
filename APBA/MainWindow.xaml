@@ -20,23 +20,30 @@
                 <MenuItem Name="MainMenuPLOpen" Header="Открыть"></MenuItem>
                 <MenuItem Name="MainMenuPLSave" Header="Сохранить"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Эффекты">
+                <MenuItem Header="Звуковые эффекты" x:Name="MainMenuSoundEffects"></MenuItem>
+                <MenuItem Header="Эквалайзер" x:Name="MainMenuEcvalaizer"></MenuItem>
+            </MenuItem>
         </Menu>
-        <ListView Name="lvPlaylist" Grid.Column="0" Grid.Row="1" AllowDrop="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Выше" Name="lvContextUpper"></MenuItem>
-                    <MenuItem Header="Ниже" Name="lvContextLower"></MenuItem>
-                    <MenuItem Header="Удалить" Name="lvContextDelete"></MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
+        <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="True">
+            <Label x:Name="lblPlaylistDuration" Height="27" FontSize="15" DockPanel.Dock="Bottom">00:00:00</Label>
+            <ListView Name="lvPlaylist" DockPanel.Dock="Top" AllowDrop="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Выше" Name="lvContextUpper"></MenuItem>
+                        <MenuItem Header="Ниже" Name="lvContextLower"></MenuItem>
+                        <MenuItem Header="Удалить" Name="lvContextDelete"></MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+        </DockPanel>
         <StackPanel x:Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" Height="Auto" VerticalAlignment="Center">
                 <Border Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="10, 10, 10, 10" Margin="7" Padding="5">
