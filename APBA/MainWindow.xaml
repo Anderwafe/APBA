@@ -5,85 +5,125 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APBA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" IsMainMenu="True" Name="MainMenu" FontSize="15" Grid.Column="0" Grid.ColumnSpan="2">
-            <MenuItem Header="Плейлист">
-                <MenuItem Name="MainMenuPLOpen" Header="Открыть"></MenuItem>
-                <MenuItem Name="MainMenuPLSave" Header="Сохранить"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Эквалайзер" x:Name="MainMenuEcvalaizer"></MenuItem>
-        </Menu>
-        <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="True">
-            <Label x:Name="lblPlaylistDuration" Height="27" FontSize="15" DockPanel.Dock="Bottom">00:00:00</Label>
-            <ListView Name="lvPlaylist" DockPanel.Dock="Top" AllowDrop="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <WrapPanel>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                        </WrapPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Выше" Name="lvContextUpper"></MenuItem>
-                        <MenuItem Header="Ниже" Name="lvContextLower"></MenuItem>
-                        <MenuItem Header="Удалить" Name="lvContextDelete"></MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
-        </DockPanel>
-        <StackPanel x:Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Height="Auto" VerticalAlignment="Center">
-                <Border Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="10, 10, 10, 10" Margin="7" Padding="5">
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                        <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" VerticalAlignment="Center" Width="400"></Slider>
-                        <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
-                            <Label Name="lblDurationNow" HorizontalAlignment="Left" FontSize="15" Width="auto" Content="00:00:00"></Label>
-                            <Label Name="lblMusicDuration" HorizontalAlignment="Right" FontSize="15" Width="auto" Content="00:00:00"></Label>
-                        </DockPanel>
-                    </StackPanel>
-                </Border>
-                <StackPanel Orientation="Vertical">
-                    <Border BorderBrush="Black" CornerRadius="10 10 0 0" BorderThickness="2 2 2 0" Padding="5">
-                        <Border.Background>
-                            <LinearGradientBrush>
-                                <GradientStop Color="Red" Offset="0.0"></GradientStop>
-                                <GradientStop Color="Yellow" Offset="0.5"></GradientStop>
-                                <GradientStop Color="Green" Offset="1"></GradientStop>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Slider x:Name="slrPlayVolume" Width="Auto" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Maximum="100" Orientation="Vertical" Value="100" Height="75" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Minimum="0"></Slider>
-                    </Border>
-                    <Border Background="Green" BorderBrush="Black" BorderThickness="2 2 2 2" CornerRadius="0 0 10 10" Padding="5">
-                        <Button Height="20" Width="20" Opacity="1000" IsTabStop="False">
-                        </Button>
-                    </Border>
-                </StackPanel>
-            </StackPanel>
-            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Height="50" Width="400" LastChildFill="True">
-                <Button x:Name="btnShaffle" Content="Shaffle" Background="White" Width="35" Height="35" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"></Button>
-
-                <Button x:Name="btnLoop" Background="White" BorderBrush="Red" BorderThickness="3" Content="Loop" Width="35" Height="35" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right">
+        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800" Background="#1F1F1F">
+    <Window.Resources>
+        <Style TargetType="{x:Type Menu}">
+            <Setter Property="Background" Value="#FF001E26"></Setter>
+            <Setter Property="Foreground" Value="#FF839496"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Style.Resources>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Background" Value="#FF001E26"></Setter>
+                    <Setter Property="Foreground" Value="#FF839496"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Background" Value="#FF001E26"></Setter>
+            <Setter Property="Foreground" Value="#FF839496"></Setter>
+            <Setter Property="BorderThickness" Value="0"></Setter>
+        </Style>
+    </Window.Resources>
+    <Border BorderThickness="0" Padding="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+                <!--
+                <Button DockPanel.Dock="Right" x:Name="btnCloseApp" Width="30" Background="#FF001E26" Foreground="#FFFFFF" FontSize="15">
+                    <Button.Content>
+                        <TextBlock FontWeight="Bold" Text="X" ></TextBlock>
+                    </Button.Content>
                 </Button>
-
-                <Border>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
-                        <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
-                        <Button x:Name="btnResumePause" Content="Resume/Pause" Background="White" Width="50" Height="50"></Button>
-                        <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
-                        <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
-                    </StackPanel>
-                </Border>
+                <Button DockPanel.Dock="Right" x:Name="btnOpenFullApp" Width="30" Background="#FF001E26" Foreground="#FFFFFF" FontSize="15">
+                    <Button.Content>
+                        <TextBlock FontWeight="Bold" Text="O"></TextBlock>
+                    </Button.Content>
+                </Button>
+                <Button DockPanel.Dock="Right" x:Name="btnCollapseApp" Width="30" Background="#FF001E26" Foreground="#FFFFFF" FontSize="15">
+                    <Button.Content>
+                        <TextBlock FontWeight="Bold" Text="_"></TextBlock>
+                    </Button.Content>
+                </Button>
+                -->
+                <Menu DockPanel.Dock="Left" IsMainMenu="True" BorderThickness="0" Name="MainMenu" FontSize="15">
+                    <MenuItem Header="Плейлист">
+                        <MenuItem Name="MainMenuPLOpen" Header="Открыть"></MenuItem>
+                        <MenuItem Name="MainMenuPLSave" Header="Сохранить"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Эквалайзер" x:Name="MainMenuEcvalaizer"></MenuItem>
+                </Menu>
             </DockPanel>
-        </StackPanel>
-    </Grid>
+            <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="True">
+                <Label x:Name="lblPlaylistDuration" Height="27" FontSize="15" DockPanel.Dock="Bottom" Foreground="#F1F1F1">00:00:00</Label>
+                <ListView Name="lvPlaylist" DockPanel.Dock="Top" AllowDrop="True" Background="#1F1F1F" Foreground="#F1F1F1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Выше" Name="lvContextUpper"></MenuItem>
+                            <MenuItem Header="Ниже" Name="lvContextLower"></MenuItem>
+                            <MenuItem Header="Удалить" Name="lvContextDelete"></MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                </ListView>
+            </DockPanel>
+            <StackPanel x:Name="MainStackPanel" Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Height="Auto" VerticalAlignment="Center">
+                    <Border Background="#FF001E26" BorderBrush="White" BorderThickness="2" CornerRadius="10, 10, 10, 10" Margin="7" Padding="5">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                            <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" VerticalAlignment="Center" Width="400"></Slider>
+                            <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+                                <Label Name="lblDurationNow" HorizontalAlignment="Left" Foreground="White" FontSize="15" Width="auto" Content="00:00:00"></Label>
+                                <Label Name="lblMusicDuration" HorizontalAlignment="Right" Foreground="White" FontSize="15" Width="auto" Content="00:00:00"></Label>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Orientation="Vertical">
+                        <Border BorderBrush="Black" CornerRadius="10 10 0 0" BorderThickness="2 2 2 0" Padding="5">
+                            <Border.Background>
+                                <LinearGradientBrush>
+                                    <GradientStop Color="Red" Offset="0.0"></GradientStop>
+                                    <GradientStop Color="Yellow" Offset="0.5"></GradientStop>
+                                    <GradientStop Color="Green" Offset="1"></GradientStop>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Slider x:Name="slrPlayVolume" Width="Auto" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" Maximum="100" Orientation="Vertical" Value="100" Height="75" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Minimum="0"></Slider>
+                        </Border>
+                        <Border Background="Green" BorderBrush="Black" BorderThickness="2 2 2 2" CornerRadius="0 0 10 10" Padding="5">
+                            <Button Height="20" Width="20" Opacity="1000" IsTabStop="False">
+                            </Button>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+                <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Height="50" Width="400" LastChildFill="True">
+                    <Button x:Name="btnShaffle" Content="Shaffle" Background="White" Width="35" Height="35" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center"></Button>
+
+                    <Button x:Name="btnLoop" Background="White" BorderBrush="Red" BorderThickness="3" Content="Loop" Width="35" Height="35" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    </Button>
+
+                    <Border>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="Auto">
+                            <Button x:Name="btnPrev" Content="Prev" Background="White" Width="50" Height="50"></Button>
+                            <Button x:Name="btnResumePause" Content="Resume/Pause" Background="White" Width="50" Height="50"></Button>
+                            <Button x:Name="btnStop" Content="Stop" Background="White" Width="50" Height="50"></Button>
+                            <Button x:Name="btnNext" Content="Next" Background="White" Width="50" Height="50"></Button>
+                        </StackPanel>
+                    </Border>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

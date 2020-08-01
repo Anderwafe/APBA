@@ -109,6 +109,24 @@ namespace APBA
                 btnLoop.BorderBrush = btnLoop.BorderBrush == Brushes.Red ? Brushes.Blue : Brushes.Red;
             };
 
+            /*btnCloseApp.Click += (e, a) =>
+            {
+                Application.Current.Shutdown();
+            };
+
+            btnCollapseApp.Click += (e, a) =>
+            {
+                this.WindowState = WindowState.Minimized;
+            };
+
+            btnOpenFullApp.Click += (e, a) =>
+            {
+                if (this.WindowState == WindowState.Maximized)
+                    this.WindowState = WindowState.Normal;
+                else
+                    this.WindowState = WindowState.Maximized;
+            };*/
+
             #endregion
 
             #region ListViews logic

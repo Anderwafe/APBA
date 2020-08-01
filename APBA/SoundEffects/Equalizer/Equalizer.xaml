@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APBA"
         mc:Ignorable="d"
-        Title="Equalizer" Height="350" Width="550" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Equalizer" Height="350" Width="550" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="#1F1F1F">
+    <Window.Resources>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="#FF839496"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <StackPanel Orientation = "Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation = "Horizontal" Height="220">

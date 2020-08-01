@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APBA"
         mc:Ignorable="d"
-        Title="SavePlaylist" Height="150" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="SavePlaylist" Height="150" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Background="#1F1F1F" Foreground="#F1F1F1" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -16,9 +16,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Введите название плейлиста:" FontSize="20"></Label>
-        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="SavePlaylistName" FontSize="20"></TextBox>
-        <Button Grid.Row="2" Content="Сохранить" Name="SavePlaylistOK" FontSize="20"/>
-        <Button Grid.Row="2" Grid.Column="1" Content="Отмена" FontSize="20" IsCancel="True"></Button>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Введите название плейлиста:" Background="#1F1F1F" Foreground="#F1F1F1" FontSize="20"></Label>
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Name="SavePlaylistName" Background="#1F1F1F" Foreground="#F1F1F1" FontSize="20"></TextBox>
+        <Button Grid.Row="2" Content="Сохранить" Name="SavePlaylistOK" Background="#1F1F1F" Foreground="#F1F1F1" FontSize="20"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Отмена" FontSize="20" Background="#1F1F1F" Foreground="#F1F1F1" IsCancel="True"></Button>
     </Grid>
 </Window>
