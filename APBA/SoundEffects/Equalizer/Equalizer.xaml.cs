@@ -29,7 +29,7 @@ namespace APBA
             for(int i = 0; i < sliders.Length; i++)
             {
                 sliders[i].Value = EqualizerSettings.FXGain[i];
-                labels[i].Content = EqualizerSettings.FXGain[i];
+                labels[i].Content = Math.Round(EqualizerSettings.FXGain[i], 1);
             }
 
             /*slrFX0.Value = EqualizerSettings.FXGain[0];

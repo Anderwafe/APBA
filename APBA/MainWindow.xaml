@@ -20,10 +20,7 @@
                 <MenuItem Name="MainMenuPLOpen" Header="Открыть"></MenuItem>
                 <MenuItem Name="MainMenuPLSave" Header="Сохранить"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Эффекты">
-                <MenuItem Header="Звуковые эффекты" x:Name="MainMenuSoundEffects"></MenuItem>
-                <MenuItem Header="Эквалайзер" x:Name="MainMenuEcvalaizer"></MenuItem>
-            </MenuItem>
+            <MenuItem Header="Эквалайзер" x:Name="MainMenuEcvalaizer"></MenuItem>
         </Menu>
         <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="True">
             <Label x:Name="lblPlaylistDuration" Height="27" FontSize="15" DockPanel.Dock="Bottom">00:00:00</Label>

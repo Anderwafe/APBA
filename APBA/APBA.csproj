@@ -90,17 +90,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Equalizer\Equalizer.xaml.cs">
+    <Compile Include="SoundEffects\Equalizer\Equalizer.xaml.cs">
       <DependentUpon>Equalizer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Equalizer\EqualizerSettings.cs" />
+    <Compile Include="SoundEffects\Equalizer\EqualizerSettings.cs" />
     <Compile Include="PlaylistDialog\ReadPlaylistDialog.xaml.cs">
       <DependentUpon>ReadPlaylistDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlaylistDialog\SavePlaylistDialog.xaml.cs">
       <DependentUpon>SavePlaylistDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="Equalizer\Equalizer.xaml">
+    <Page Include="SoundEffects\Equalizer\Equalizer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,5 +162,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
