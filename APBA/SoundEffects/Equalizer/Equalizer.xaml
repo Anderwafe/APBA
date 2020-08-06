@@ -55,6 +55,7 @@
                     <Label Name="lblFX9" Content="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13"></Label>
                 </StackPanel>
             </StackPanel>
+            <Button x:Name="btnEqualizerSave" Height="40" Width="40" Content="Сохранить"></Button>
         </StackPanel>
     </Grid>
 </Window>

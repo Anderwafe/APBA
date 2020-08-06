@@ -84,6 +84,7 @@
                 <StackPanel Orientation="Horizontal" Height="Auto" VerticalAlignment="Center">
                     <Border Background="#FF001E26" BorderBrush="White" BorderThickness="2" CornerRadius="10, 10, 10, 10" Margin="7" Padding="5">
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                            <Label x:Name="lblAudioName" Foreground="White" FontSize="20" HorizontalAlignment="Center" Height="35"></Label>
                             <Slider x:Name="slrPlayDuration" IsSnapToTickEnabled="False" IsMoveToPointEnabled="True" VerticalAlignment="Center" Width="400"></Slider>
                             <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
                                 <Label Name="lblDurationNow" HorizontalAlignment="Left" Foreground="White" FontSize="15" Width="auto" Content="00:00:00"></Label>

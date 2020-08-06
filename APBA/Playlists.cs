@@ -47,7 +47,8 @@ namespace APBA
                 Directory.CreateDirectory(PLPath);
             if(File.Exists(PLPath + name +".m3u"))
             {
-                return false;
+                if(MessageBox.Show("Перезаписать плейлист?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                    return false;
             }
             File.WriteAllText(PLPath + name + @".m3u", content.ToText(playlist));
             MessageBox.Show("Плейлист " + name + " успешно сохранен", "Сохранено", MessageBoxButton.OK);

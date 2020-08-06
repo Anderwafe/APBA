@@ -21,7 +21,7 @@ namespace APBA
 
         #endregion
 
-        public static void Play(in Playlists PlayItem)
+        public static void Play(Playlists PlayItem)
         {
             if(Bass.BASS_GetInfo() == null)
             {
@@ -38,6 +38,7 @@ namespace APBA
 
             ggg.Dispatcher.Invoke(() =>
             {
+                ggg.lblAudioName.Content = PlayItem.Name;
                 ggg.SyncSlider();
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
             });
@@ -73,6 +74,8 @@ namespace APBA
             timer.Enabled = false;
             Bass.BASS_StreamFree(_stream);
             Bass.BASS_ChannelStop(_stream);
+            ggg.lblAudioName.Content = "";
+            ggg.lblMusicDuration.Content = new TimeSpan(0, 0, 0);
         }
 
         public static void PlayNext()

@@ -43,6 +43,11 @@ namespace APBA
             slrFX8.Value = EqualizerSettings.FXGain[8];
             slrFX9.Value = EqualizerSettings.FXGain[9];*/
 
+            btnEqualizerSave.Click += (e, a) =>
+            {
+
+            };
+
             slrFX0.MouseRightButtonDown += (s, e) =>
             {
                 slrFX0.Value = 0;
