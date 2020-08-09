@@ -2,6 +2,7 @@
 using PlaylistsNET.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Documents;
@@ -29,7 +30,7 @@ namespace APBA
             }
         }
 
-        public static bool PlayListSave(in string name, in List<Playlists> Playlist)
+        public static bool PlayListSave(in string name, in ObservableCollection<Playlists> Playlist)
         {
             M3uPlaylist playlist = new M3uPlaylist();
             playlist.IsExtended = true;

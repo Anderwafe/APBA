@@ -8,6 +8,8 @@ using System.IO;
 using WindowsHook;
 using System.Windows.Media;
 using System.Threading;
+using IMBA;
+using System.Collections.Generic;
 
 namespace APBA
 {
@@ -20,7 +22,42 @@ namespace APBA
         {
             InitializeComponent();
 
+            lvPlaylist.ItemsSource = BassMet.PlayList;
+
             Dispatcher.InvokeAsync(() => { Timer timer = new Timer(new TimerCallback(CollectGarbage), null, 0, 5000); });
+
+            Dispatcher.InvokeAsync(() =>
+            {
+                if (File.Exists(EqualizerSettings.SettingsPath))
+                {
+                    try
+                    {
+                        IniReader IR = new IniReader(EqualizerSettings.SettingsPath);
+                        if (IR.GetValuebyParam(IR.GetValuebyParam("Current"), true) == null)
+                        {
+                            IniWriter IW = new IniWriter(EqualizerSettings.SettingsPath);
+                            IW.WriteParam("Current", "Standart");
+                            IW.WriteParam("Standart", EqualizerSettings.FXGain.Select(x => x.ToString()).ToArray());
+                        }
+                        else
+                        {
+                            EqualizerSettings.LoadPreset(IR.GetValuebyParam("Current"));
+                        }
+                    }
+                    catch
+                    {
+                        IniWriter IW = new IniWriter(EqualizerSettings.SettingsPath);
+                        IW.WriteParam("Current", "Standart");
+                        IW.WriteParam("Standart", EqualizerSettings.FXGain.Select(x => x.ToString()).ToArray());
+                    }
+                }
+                else
+                {
+                    IniWriter IW = new IniWriter(EqualizerSettings.SettingsPath);
+                    IW.WriteParam("Current", "Standart");
+                    IW.WriteParam("Standart", EqualizerSettings.FXGain.Select(x => x.ToString()).ToArray());
+                }
+            });
 
             #region Global Hooks
 
@@ -72,7 +109,7 @@ namespace APBA
                         BassMet.now = i;
                 }
 
-                UpdateList();
+                //UpdateList();
             };
 
             btnStop.Click += (e, a) =>
@@ -135,20 +172,79 @@ namespace APBA
             {
                 if (BassMet.PlayList.Count > 1)
                 {
-                    lvPlaylistDoUpper(lvPlaylist.SelectedIndex);
+                    List<Playlists> abc = new List<Playlists>();
+                    for(int i = 0; i < lvPlaylist.SelectedItems.Count; i++)
+                    {
+                        abc.Add((Playlists)lvPlaylist.SelectedItems[i]);
+
+                        //lvPlaylistDoUpper(BassMet.PlayList.IndexOf(BassMet.PlayList.Where(x => x == lvPlaylist.SelectedItems[0]).First()));
+                    }
+                    for(int i = 0; i < BassMet.PlayList.Count; i++)
+                    {
+                        foreach(var j in abc)
+                            if(BassMet.PlayList[i] == j)
+                            {
+                                lvPlaylistDoUpper(i);
+                            }
+                    }
                 }
-                UpdateList();
+                //UpdateList();
             };
 
             lvContextLower.Click += (e, a) =>
             {
                 if (BassMet.PlayList.Count > 1)
                 {
-                    lvPlaylistDoLower(lvPlaylist.SelectedIndex);
+                    List<Playlists> abc = new List<Playlists>();
+                    for (int i = 0; i < lvPlaylist.SelectedItems.Count; i++)
+                    {
+                        abc.Add((Playlists)lvPlaylist.SelectedItems[i]);
+
+                        //lvPlaylistDoUpper(BassMet.PlayList.IndexOf(BassMet.PlayList.Where(x => x == lvPlaylist.SelectedItems[0]).First()));
+                    }
+                    for (int i = 0; i < BassMet.PlayList.Count; i++)
+                    {
+                        foreach (var j in abc)
+                            if (BassMet.PlayList[i] == j)
+                            {
+                                lvPlaylistDoLower(i);
+                            }
+                    }
+
+                    //lvPlaylistDoLower(lvPlaylist.SelectedIndex);
                 }
-                UpdateList();
+                //UpdateList();
             };
-            
+
+            lvContextDelete.Click += (e, a) =>
+            {
+                try
+                {
+                    List<Playlists> abc = new List<Playlists>();
+                    for (int i = 0; i < lvPlaylist.SelectedItems.Count; i++)
+                    {
+                        abc.Add((Playlists)lvPlaylist.SelectedItems[i]);
+
+                        //lvPlaylistDoUpper(BassMet.PlayList.IndexOf(BassMet.PlayList.Where(x => x == lvPlaylist.SelectedItems[0]).First()));
+                    }
+                    for (int i = 0; i < BassMet.PlayList.Count; i++)
+                    {
+                        foreach (var j in abc)
+                            if (BassMet.PlayList[i] == j)
+                            {
+                                BassMet.PlayList.RemoveAt(i);
+                            }
+                    }
+
+                    //BassMet.PlayList.RemoveAt(lvPlaylist.SelectedIndex);
+                    UpdateList();
+                }
+                catch
+                {
+
+                }
+            };
+
             lvPlaylist.MouseDoubleClick += (e, a) =>
             {
                 if (BassMet.PlayList.Count == 0)
@@ -195,19 +291,6 @@ namespace APBA
                         }
                     }
                     UpdateList();
-                }
-            };
-
-            lvContextDelete.Click += (e, a) =>
-            {
-                try
-                {
-                    BassMet.PlayList.RemoveAt(lvPlaylist.SelectedIndex);
-                    UpdateList();
-                }
-                catch
-                {
-
                 }
             };
 
@@ -351,8 +434,8 @@ namespace APBA
 
         public void UpdateList()
         {
-            lvPlaylist.ItemsSource = null;
-            lvPlaylist.ItemsSource = BassMet.PlayList;
+            //lvPlaylist.ItemsSource = null;
+            //lvPlaylist.ItemsSource = BassMet.PlayList;
             Dispatcher.Invoke(() => lblPlaylistDuration.Content = CalculatePlaylistDuration());
         }
     }

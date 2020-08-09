@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
@@ -15,7 +16,8 @@ namespace APBA
         public static int now;
         public static int _stream = 0;
         public static BASSTimer timer = new BASSTimer(500);
-        static public List<Playlists> PlayList = new List<Playlists>();
+        //static public List<Playlists> PlayList = new List<Playlists>();
+        static public ObservableCollection<Playlists> PlayList = new ObservableCollection<Playlists>();
         public static float slrVolume;
         static public MainWindow ggg;
 

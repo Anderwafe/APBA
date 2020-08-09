@@ -61,6 +61,9 @@
     <Reference Include="Bass.Net">
       <HintPath>..\..\..\BASS24\dotnet\v4.5\Bass.Net.dll</HintPath>
     </Reference>
+    <Reference Include="IMBA">
+      <HintPath>..\..\IMBA\IMBA\bin\Debug\IMBA.dll</HintPath>
+    </Reference>
     <Reference Include="PlaylistsNET">
       <HintPath>..\..\PlaylistsNET-master\PlaylistsNET\bin\Debug\net45\PlaylistsNET.dll</HintPath>
       <Private>True</Private>

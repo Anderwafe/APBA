@@ -55,7 +55,15 @@
                     <Label Name="lblFX9" Content="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13"></Label>
                 </StackPanel>
             </StackPanel>
-            <Button x:Name="btnEqualizerSave" Height="40" Width="40" Content="Сохранить"></Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <ComboBox x:Name="cmbEqualizerProfile" Width="145"></ComboBox>
+                <Button x:Name="btnEqualizerProfileDlt" Width="55" Content="Удалить"></Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="1">
+                <TextBox x:Name="txtbNewProfileName" Width="145"></TextBox>
+                <Button x:Name="btnEqualizerProfileAdd" Width="53" Height="20" Content="Добавить"></Button>
+            </StackPanel>
+            <Button x:Name="btnEqualizerSave" Height="40" Width="60" Content="Сохранить" Margin="5"></Button>
         </StackPanel>
     </Grid>
 </Window>

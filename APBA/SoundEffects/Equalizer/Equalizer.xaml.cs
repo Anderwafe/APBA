@@ -1,5 +1,8 @@
-﻿using System;
+﻿using IMBA;
+
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,33 +22,75 @@ namespace APBA
     /// </summary>
     public partial class Equalizer : Window
     {
+        private ObservableCollection<string> PresetCollection = new ObservableCollection<string>();
+
         public Equalizer()
         {
             InitializeComponent();
 
-            Slider[] sliders = { slrFX0, slrFX1, slrFX2, slrFX3, slrFX4, slrFX5, slrFX6, slrFX7, slrFX8, slrFX9};
+            Slider[] sliders = { slrFX0, slrFX1, slrFX2, slrFX3, slrFX4, slrFX5, slrFX6, slrFX7, slrFX8, slrFX9 };
             Label[] labels = { lblFX0, lblFX1, lblFX2, lblFX3, lblFX4, lblFX5, lblFX6, lblFX7, lblFX8, lblFX9 };
 
-            for(int i = 0; i < sliders.Length; i++)
+            IniReader IR = new IniReader(EqualizerSettings.SettingsPath);
+            IniWriter IW = new IniWriter(EqualizerSettings.SettingsPath);
+
+            cmbEqualizerProfile.ItemsSource = PresetCollection;
+
+            foreach(var i in IR.GetParams().Skip(1))
             {
-                sliders[i].Value = EqualizerSettings.FXGain[i];
-                labels[i].Content = Math.Round(EqualizerSettings.FXGain[i], 1);
+                PresetCollection.Add(i);
             }
 
-            /*slrFX0.Value = EqualizerSettings.FXGain[0];
-            slrFX1.Value = EqualizerSettings.FXGain[1];
-            slrFX2.Value = EqualizerSettings.FXGain[2];
-            slrFX3.Value = EqualizerSettings.FXGain[3];
-            slrFX4.Value = EqualizerSettings.FXGain[4];
-            slrFX5.Value = EqualizerSettings.FXGain[5];
-            slrFX6.Value = EqualizerSettings.FXGain[6];
-            slrFX7.Value = EqualizerSettings.FXGain[7];
-            slrFX8.Value = EqualizerSettings.FXGain[8];
-            slrFX9.Value = EqualizerSettings.FXGain[9];*/
+            cmbEqualizerProfile.SelectedItem = IR.GetValuebyParam("Current");
+
+            for (int i = 0; i < sliders.Length; i++)
+            {
+                sliders[i].Value = EqualizerSettings.FXGain[i];
+                labels[i].Content = EqualizerSettings.FXGain[i];
+            }
+
+            cmbEqualizerProfile.SelectionChanged += (e, a) =>
+            {
+                EqualizerSettings.LoadPreset(cmbEqualizerProfile.SelectedItem.ToString());
+                IW.WriteParam("Current", cmbEqualizerProfile.SelectedItem.ToString());
+                for (int i = 0; i < sliders.Length; i++)
+                {
+                    sliders[i].Value = EqualizerSettings.FXGain[i];
+                    labels[i].Content = EqualizerSettings.FXGain[i];
+                }
+            };
+
+            btnEqualizerProfileAdd.Click += (e, a) =>
+            {
+                if (txtbNewProfileName.Text.Replace(" ", "") != "" && IR.GetParams().Skip(1).Any(x => x != txtbNewProfileName.Text))
+                {
+                    IW.WriteParam(txtbNewProfileName.Text, EqualizerSettings.FXGain.Select(x => x.ToString()).ToArray());
+                    PresetCollection.Add(txtbNewProfileName.Text);
+                    cmbEqualizerProfile.SelectedItem = txtbNewProfileName.Text;
+                }
+                txtbNewProfileName.Text = "";
+            };
+
+            btnEqualizerProfileDlt.Click += (e, a) =>
+            {
+                if(cmbEqualizerProfile.Text != "Standart")
+                {
+                    string s = cmbEqualizerProfile.Text;
+                    cmbEqualizerProfile.SelectedItem = "Standart";
+                    PresetCollection.Remove(s);
+                    IW.DeleteParam(s);
+                }
+            };
+
+            this.Closed += (e, a) =>
+            {
+                EqualizerSettings.LoadPreset(IR.GetValuebyParam("Current"));
+            };
 
             btnEqualizerSave.Click += (e, a) =>
             {
-
+                if(cmbEqualizerProfile.Text != "Standart")
+                    IW.WriteParam(cmbEqualizerProfile.SelectedItem.ToString(), EqualizerSettings.FXGain.Select(x => x.ToString()).ToArray());
             };
 
             slrFX0.MouseRightButtonDown += (s, e) =>
@@ -121,61 +166,61 @@ namespace APBA
 
             slrFX0.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[0] = (float)e.NewValue;
+                EqualizerSettings.FXGain[0] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(0);
                 lblFX0.Content = Math.Round(e.NewValue, 1);
             };
             slrFX1.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[1] = (float)e.NewValue;
+                EqualizerSettings.FXGain[1] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(1);
                 lblFX1.Content = Math.Round(e.NewValue, 1);
             };
             slrFX2.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[2] = (float)e.NewValue;
+                EqualizerSettings.FXGain[2] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(2);
                 lblFX2.Content = Math.Round(e.NewValue, 1);
             };
             slrFX3.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[3] = (float)e.NewValue;
+                EqualizerSettings.FXGain[3] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(3);
                 lblFX3.Content = Math.Round(e.NewValue, 1);
             };
             slrFX4.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[4] = (float)e.NewValue;
+                EqualizerSettings.FXGain[4] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(4);
                 lblFX4.Content = Math.Round(e.NewValue, 1);
             };
             slrFX5.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[5] = (float)e.NewValue;
+                EqualizerSettings.FXGain[5] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(5);
                 lblFX5.Content = Math.Round(e.NewValue, 1);
             };
             slrFX6.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[6] = (float)e.NewValue;
+                EqualizerSettings.FXGain[6] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(6);
                 lblFX6.Content = Math.Round(e.NewValue, 1);
             };
             slrFX7.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[7] = (float)e.NewValue;
+                EqualizerSettings.FXGain[7] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(7);
                 lblFX7.Content = Math.Round(e.NewValue, 1);
             };
             slrFX8.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[8] = (float)e.NewValue;
+                EqualizerSettings.FXGain[8] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(8);
                 lblFX8.Content = Math.Round(e.NewValue, 1);
             };
             slrFX9.ValueChanged += (s, e) =>
             {
-                EqualizerSettings.FXGain[9] = (float)e.NewValue;
+                EqualizerSettings.FXGain[9] = (float)Math.Round(e.NewValue, 1);
                 EqualizerSettings.ChangeFXParam(9);
                 lblFX9.Content = Math.Round(e.NewValue,1);
             };
