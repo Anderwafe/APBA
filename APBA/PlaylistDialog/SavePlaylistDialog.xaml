@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APBA"
         mc:Ignorable="d"
-        Title="SavePlaylist" Height="150" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Background="#1F1F1F" Foreground="#F1F1F1" WindowStartupLocation="CenterOwner">
+        Title="Сохранить плейлист" Height="150" Width="400" ShowInTaskbar="False" ResizeMode="NoResize" Background="#1F1F1F" Foreground="#F1F1F1" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>

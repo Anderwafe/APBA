@@ -43,7 +43,9 @@ namespace APBA
                 ggg.lblAudioName.Content = PlayItem.Name;
                 ggg.SyncSlider();
                 ggg.lblMusicDuration.Content = new TimeSpan(0, 0, (int)Bass.BASS_ChannelBytes2Seconds(BassMet._stream, Bass.BASS_ChannelGetLength(BassMet._stream)));
+            ggg.btnResumePause.Content = "Pause";
             });
+
 
             Bass.BASS_ChannelPlay(_stream, true);
             timer.Start();

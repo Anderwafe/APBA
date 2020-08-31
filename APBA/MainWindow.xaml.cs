@@ -17,6 +17,7 @@ namespace APBA
     {
 
         Random random = new Random(DateTime.Now.Millisecond);
+        double MusicVolumeBuffer;
 
         public MainWindow()
         {
@@ -120,9 +121,15 @@ namespace APBA
             btnResumePause.Click += (e, a) =>
             {
                 if (Bass.BASS_ChannelIsActive(BassMet._stream) == BASSActive.BASS_ACTIVE_PAUSED)
+                {
                     BassMet.Resume();
+                    btnResumePause.Content = "Pause";
+                }
                 else
+                {
                     BassMet.Pause();
+                    btnResumePause.Content = "Resume";
+                }
             };
 
             btnNext.Click += (e, a) =>
@@ -144,6 +151,19 @@ namespace APBA
             btnLoop.Click += (e, a) =>
             {
                 btnLoop.BorderBrush = btnLoop.BorderBrush == Brushes.Red ? Brushes.Blue : Brushes.Red;
+            };
+
+            btnMute.Click += (e, a) =>
+            {
+                if (slrPlayVolume.Value != 0)
+                {
+                    MusicVolumeBuffer = slrPlayVolume.Value;
+                    slrPlayVolume.Value = 0;
+                }
+                else
+                {
+                    slrPlayVolume.Value = MusicVolumeBuffer;
+                }
             };
 
             /*btnCloseApp.Click += (e, a) =>
@@ -319,6 +339,12 @@ namespace APBA
                 Equalizer ES = new Equalizer();
                 ES.ShowDialog();
             };
+
+            /*MainMenuSettings.Click += (e, a) =>
+            {
+                ApplicationSettings AS = new ApplicationSettings();
+                AS.Show();
+            };*/
 
             #endregion
 

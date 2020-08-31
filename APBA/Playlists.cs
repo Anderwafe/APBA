@@ -7,7 +7,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
-
 using Un4seen.Bass;
 
 namespace APBA
